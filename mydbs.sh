@@ -54,10 +54,8 @@ set_defaults()
 
 create_conf()
 {
-	[ -n "$sql_user" ] || return 1
-
-	touch $sql_def_conf 2>/dev/null
-	chmod 0600 $sql_def_conf 2>/dev/null
+	touch $sql_def_conf 2>/dev/null || return 1
+	chmod 0600 $sql_def_conf 2>/dev/null || return 1
 	cat << EOF > $sql_def_conf
 [client]
 user=$sql_user
@@ -87,7 +85,7 @@ sql_query()
 check_sql()
 {
 	if ! sql_query "STATUS;" >/dev/null 2>&1; then
-		err "unable to connect to mysql/mariadb server."
+		err "unable to connect to mysql server."
 		destroy_conf
 		exit 1
 	fi
@@ -213,19 +211,19 @@ done
 set_defaults 
 
 if [ ! -x "$sql_cmd" ]; then
-	err "unable to find mysql binary."
+	err "unable to locate mysql binary file."
 	destroy_conf
 	exit 1
 fi
 
 if [ ! -x "$sql_dump_cmd" ]; then
-	err "unable to find mysqldump binary."
+	err "unable to locate mysqldump binary file."
 	destroy_conf
 	exit 1
 fi
 
 if ! create_conf; then
-	err "unable to create temporary config file."
+	err "unable to write temporary configuration file."
 	destroy_conf
 	exit 1
 fi
