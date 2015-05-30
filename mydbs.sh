@@ -55,7 +55,6 @@ set_defaults()
 create_conf()
 {
 	[ -n "$sql_user" ] || return 1
-	[ -n "$sql_pass" ] || return 1
 
 	touch $sql_def_conf 2>/dev/null
 	chmod 0600 $sql_def_conf 2>/dev/null
