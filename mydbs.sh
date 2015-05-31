@@ -10,7 +10,7 @@ rotate_file="$HOME/.mydbs"
 info() { echo -e "$_name: $@"; }
 info2() { echo -en "$_name: $@"; }
 err() {	echo "$_name: $@" >&2; }
-info2log() { _data="$(date +%d/%m/%Y" "%H:%M:%S)"; echo "$_data: $_name: $1" >>$backup_log; }
+info2log() { _data="$(date +%d/%m/%Y" "%H:%M:%S)"; echo "$_data: $_name: $1" >>$sql_log; }
 
 usage()
 {
@@ -31,7 +31,7 @@ Usage: $_name [OPTIONS] ...
                           (default: /tmp/mysql.socket)
 
 Example:
-       $_name -d /mnt/nfs_backup
+       $_name -d /mnt/nfs_backup -u root -p mypwd -s /var/lib/mysql/mysql.sock
    or
        $_name
 
@@ -180,7 +180,7 @@ elapsed_time()
 	info2log "-- backup finished in $timer"
 }
 
-while getopts "hvd:u:p:" opt; do
+while getopts "hvd:u:p:s:" opt; do
 	case "$opt" in
 		h)
 		  usage
@@ -243,7 +243,7 @@ _percent=0
 _start=$(date +%s)
 for db in $(get_sql_db); do
 	_dbfinished=$(($_dbfinished + 1))
-	_backup_dir="$sql_backup/mysql/$db"
+	_backup_dir="$sql_backup/$_host/mysql/$db"
 	[ -d $_backup_dir ] || mkdir -p $_backup_dir 2>/dev/null
 	file="$db.$rotate_cur.$sql_ext"
 
