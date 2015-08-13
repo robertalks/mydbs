@@ -21,6 +21,8 @@ Usage: $_name [OPTIONS] ...
 
          -h               Show this help
          -v               Show version number
+         -l               Use this rotate level
+                          (default: 7)
          -d               Use this directory to backups the databases
                           (default: /mnt/backup)
          -u               Use this username
@@ -189,6 +191,9 @@ while getopts "hvd:u:p:s:" opt; do
 		v)
 		  echo "$_name $_version"
 		  exit 0
+		;;
+		l)
+		  rotate="${OPTARG}"
 		;;
 		d)
 		  sql_backup="${OPTARG}"
