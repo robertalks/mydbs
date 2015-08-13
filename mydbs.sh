@@ -182,7 +182,7 @@ elapsed_time()
 	info2log "-- backup finished in $timer"
 }
 
-while getopts "hvd:u:p:s:" opt; do
+while getopts "hvl:d:u:p:s:" opt; do
 	case "$opt" in
 		h)
 		  usage
