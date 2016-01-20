@@ -252,11 +252,11 @@ for db in $(get_sql_db); do
 
 	echo -en "\033[s"
 	if [ $_percent -ne 100 ]; then
-		info2 "-- running backup done: \033[11C$_percent%"
+		info2 "-- running backup progress: \033[11C$_percent%"
 	fi
 	echo -en "\033[u"
 	if [ $_percent -eq 100 ]; then
-		info "-- running backup done: \033[11C100%"
+		info "-- running backup progress: \033[11C100%"
 	fi
 
 	_backup_dir="$sql_backup/$_host/mysql/$db"
