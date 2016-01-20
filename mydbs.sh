@@ -248,6 +248,17 @@ _percent=0
 _start=$(date +%s)
 for db in $(get_sql_db); do
 	_dbfinished=$(($_dbfinished + 1))
+	_percent="$(printf '%i %i' $_dbfinished $_dbcount | awk '{ pc=100*$1/$2; i=int(pc); print (pc-i<0.5)?i:i+1 }')"
+
+	echo -en "\033[s"
+	if [ $_percent -ne 100 ]; then
+		info2 "-- running backup done: \033[11C$_percent%"
+	fi
+	echo -en "\033[u"
+	if [ $_percent -eq 100 ]; then
+		info "-- running backup done: \033[11C100%"
+	fi
+
 	_backup_dir="$sql_backup/$_host/mysql/$db"
 	[ -d $_backup_dir ] || mkdir -p $_backup_dir 2>/dev/null
 	file="$db.$rotate_cur.$sql_ext"
@@ -270,17 +281,8 @@ for db in $(get_sql_db); do
 		info2log "-- backup created: filename: $file.gz, size: ${_size}Kb"
 	fi
 	rm -f "$_backup_dir/$file" >/dev/null 2>&1
-	
-	_percent="$(printf '%i %i' $_dbfinished $_dbcount | awk '{ pc=100*$1/$2; i=int(pc); print (pc-i<0.5)?i:i+1 }')"
-	echo -en "\033[s"
-	if [ $_percent -ne 100 ]; then
-		info2 "-- running backup done: \033[11C$_percent%"
-	fi
-	echo -en "\033[u"
-	if [ $_percent -eq 100 ]; then
-		info "-- running backup done: \033[11C100%"
-	fi
 done
+
 _end=$(date +%s)
 elapsed_time
 info "-- backup done, logfile saved to: $sql_log"
