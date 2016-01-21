@@ -1,7 +1,7 @@
 #!/bin/sh -e
 
 _name="$(basename $0)"
-_version="1.1"
+_version="1.2"
 _host="$(hostname -f)"
 
 rotate=7
@@ -62,8 +62,13 @@ create_conf()
 [client]
 user=$sql_user
 password=$sql_pass
+EOF
+	if [ -n "$sql_socket" ]; then
+	cat << EOF >> $sql_def_conf
 socket=$sql_socket
 EOF
+	fi
+
 	return 0
 }
 
