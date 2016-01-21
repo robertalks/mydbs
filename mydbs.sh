@@ -30,7 +30,7 @@ Usage: $_name [OPTIONS] ...
          -p               Use this password
                           (default: none)
          -s               Use this socket
-                          (default: /tmp/mysql.socket)
+                          (default: none)
 
 Example:
        $_name -d /mnt/nfs_backup -u root -p mypwd -s /var/lib/mysql/mysql.sock
@@ -46,7 +46,7 @@ set_defaults()
 	[ -n "$sql_dump_cmd" ] || sql_dump_cmd="$(which mysqldump 2>/dev/null || echo mysqldump)"
 	[ -n "$sql_user" ] || sql_user="root"
 	[ -n "$sql_pass" ] || sql_pass=""
-	[ -n "$sql_socket" ] || sql_socket="/tmp/mysql.sock"
+	[ -n "$sql_socket" ] || sql_socket=""
 	[ -n "$sql_backup" ] || sql_backup="/mnt/backup"
 	[ -n "$sql_log" ] || sql_log="/var/log/mydbs.log"
 	[ -n "$sql_ext" ] || sql_ext="sql"
